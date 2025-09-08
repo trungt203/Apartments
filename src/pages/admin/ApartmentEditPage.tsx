@@ -336,10 +336,10 @@ const isInvalidOrMissingId = !isNewApartment && (!id || isNaN(Number(id)) || Num
     e.preventDefault();
     
     // Kiểm tra dữ liệu
-    if (!apartment.dia_chi || !apartment.gia_thue || !apartment.dien_tich) {
-      setError('Vui lòng điền đầy đủ thông tin bắt buộc');
-      return;
-    }
+    // if (!apartment.dia_chi || !apartment.gia_thue || !apartment.dien_tich) {
+    //   setError('Vui lòng điền đầy đủ thông tin bắt buộc');
+    //   return;
+    // }
     
     try {
       setSaving(true);
