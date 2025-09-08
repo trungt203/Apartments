@@ -248,12 +248,41 @@ export const updateApartment = async (id: number, apartment: Partial<Apartment>)
 
 // Xóa căn hộ
 export const deleteApartment = async (id: number): Promise<void> => {
-  const { error } = await supabase
-    .from(APARTMENTS_TABLE)
-    .delete()
-    .eq('id', id);
+  try {
+    // Kiểm tra ID hợp lệ
+    if (isNaN(id) || id <= 0) {
+      throw new Error(`ID căn hộ không hợp lệ: ${id}`);
+    }
 
-  if (error) {
+    // Thêm truy vấn để kiểm tra căn hộ tồn tại trước khi xóa
+    const { data: existingApartment, error: checkError } = await supabase
+      .from(APARTMENTS_TABLE)
+      .select('id')
+      .eq('id', id)
+      .single();
+
+    if (checkError) {
+      console.error(`Lỗi khi kiểm tra căn hộ có id ${id}:`, checkError);
+      throw new Error(`Không thể xóa căn hộ: ${checkError.message}`);
+    }
+
+    if (!existingApartment) {
+      throw new Error(`Không tìm thấy căn hộ với ID: ${id}`);
+    }
+
+    // Thực hiện xóa căn hộ
+    const { error } = await supabase
+      .from(APARTMENTS_TABLE)
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error(`Lỗi khi xóa căn hộ có id ${id}:`, error);
+      throw error;
+    }
+
+    console.log(`Đã xóa căn hộ có id ${id} thành công`);
+  } catch (error) {
     console.error(`Lỗi khi xóa căn hộ có id ${id}:`, error);
     throw error;
   }
