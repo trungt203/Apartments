@@ -85,8 +85,8 @@ const Header: React.FC = () => {
         
         <NavLinks>
           <NavLink to="/">Trang chủ</NavLink>
-          <NavLink to="/about">Giới thiệu</NavLink>
-          <NavLink to="/contact">Liên hệ</NavLink>
+          {/* <NavLink to="/about">Giới thiệu</NavLink>
+          <NavLink to="/contact">Liên hệ</NavLink> */}
           {/* <NavLink to="/admin/apartments">Quản lý</NavLink> */}
         </NavLinks>
       </NavbarContent>

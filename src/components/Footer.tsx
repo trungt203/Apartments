@@ -119,12 +119,15 @@ const Footer: React.FC = () => {
         <FooterSection>
           <FooterTitle>Về chúng tôi</FooterTitle>
           <FooterText>
-            ApartmentRent là nền tảng cho thuê căn hộ trực tuyến hàng đầu, 
-            cung cấp cho khách hàng các lựa chọn căn hộ chất lượng, đảm bảo và giá cả hợp lý.
+            ApartmentRent nơi cung cấp thông tin về các căn hộ cho thuê chất lượng, đa dạng và giá cả hợp lý.
           </FooterText>
           <SocialLinks>
-            <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-              <span role="img" aria-label="facebook">FB</span>
+            <SocialLink 
+                href="https://www.facebook.com/tran.thi.yen.khoa.216431/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+            >
+                <span role="img" aria-label="facebook">FB</span>
             </SocialLink>
             {/* <SocialLink href="#" target="_blank" rel="noopener noreferrer">
               <span role="img" aria-label="twitter">TW</span>
@@ -166,21 +169,21 @@ const Footer: React.FC = () => {
           <FooterTitle>Liên hệ</FooterTitle>
           <ContactItem>
             <ContactIcon>📍</ContactIcon>
-            <div>123 Đường Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh</div>
+            <div>Trần Thị Yến Khoa</div>
           </ContactItem>
           <ContactItem>
             <ContactIcon>📞</ContactIcon>
-            <div>+84 123 456 789 - Trần Thị Yến Khoa</div>
+            <div>+84 362 657 101 (Zalo/Call/WhatsApp)</div>
           </ContactItem>
-          <ContactItem>
+          {/* <ContactItem>
             <ContactIcon>✉️</ContactIcon>
             <div>info@apartmentrent.vn</div>
-          </ContactItem>
-          <ContactItem>
+          </ContactItem> */}
+          {/* <ContactItem>
             <ContactIcon>⏰</ContactIcon>
             <div>Thứ Hai - Thứ Sáu: 8:00 - 17:00<br />
             Thứ Bảy: 9:00 - 12:00</div>
-          </ContactItem>
+          </ContactItem> */}
         </FooterSection>
       </FooterContent>
       

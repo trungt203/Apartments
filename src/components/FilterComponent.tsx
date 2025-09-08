@@ -18,17 +18,20 @@ const FilterTitle = styled.h3`
 
 const FilterForm = styled.form`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
 `;
 
 const FilterGroup = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 5px;
+  min-height: 90px;
+  width: 100%;
 `;
 
 const FilterLabel = styled.label`
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: 500;
   color: #555;
   font-size: 14px;
@@ -51,14 +54,42 @@ const FilterInput = styled.input`
 const RangeContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+  
+  &::after {
+    content: "—";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #999;
+    font-weight: 300;
+    pointer-events: none;
+  }
+`;
+
+const RangeLabel = styled.span`
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  display: block;
+`;
+
+const RangeInputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
-  gap: 10px;
+  margin-top: 25px;
+  gap: 15px;
+  grid-column: 1 / -1; /* Span across all columns */
 `;
 
 const Button = styled.button`
@@ -141,50 +172,6 @@ const FilterComponent: React.FC = () => {
         </FilterGroup>
         
         <FilterGroup>
-          <FilterLabel>Giá thuê (VNĐ/tháng)</FilterLabel>
-          <RangeContainer>
-            <FilterInput
-              type="number"
-              name="gia_thue_min"
-              placeholder="Từ"
-              value={tempFilter.gia_thue_min || ''}
-              onChange={handleInputChange}
-              min="0"
-            />
-            <FilterInput
-              type="number"
-              name="gia_thue_max"
-              placeholder="Đến"
-              value={tempFilter.gia_thue_max || ''}
-              onChange={handleInputChange}
-              min="0"
-            />
-          </RangeContainer>
-        </FilterGroup>
-        
-        <FilterGroup>
-          <FilterLabel>Diện tích (m²)</FilterLabel>
-          <RangeContainer>
-            <FilterInput
-              type="number"
-              name="dien_tich_min"
-              placeholder="Từ"
-              value={tempFilter.dien_tich_min || ''}
-              onChange={handleInputChange}
-              min="0"
-            />
-            <FilterInput
-              type="number"
-              name="dien_tich_max"
-              placeholder="Đến"
-              value={tempFilter.dien_tich_max || ''}
-              onChange={handleInputChange}
-              min="0"
-            />
-          </RangeContainer>
-        </FilterGroup>
-        
-        <FilterGroup>
           <FilterLabel>Số phòng ngủ</FilterLabel>
           <FilterSelect
             name="so_phong_ngu"
@@ -211,6 +198,66 @@ const FilterComponent: React.FC = () => {
             <option value="2">2 phòng</option>
             <option value="3">3+ phòng</option>
           </FilterSelect>
+        </FilterGroup>
+        
+        <FilterGroup>
+          <FilterLabel>Giá thuê (VNĐ/tháng)</FilterLabel>
+          <RangeContainer>
+            <RangeInputGroup>
+              <RangeLabel>Từ</RangeLabel>
+              <FilterInput
+                type="number"
+                name="gia_thue_min"
+                placeholder="Tối thiểu"
+                value={tempFilter.gia_thue_min || ''}
+                onChange={handleInputChange}
+                min="0"
+                step="500000"
+              />
+            </RangeInputGroup>
+            <RangeInputGroup>
+              <RangeLabel>Đến</RangeLabel>
+              <FilterInput
+                type="number"
+                name="gia_thue_max"
+                placeholder="Tối đa"
+                value={tempFilter.gia_thue_max || ''}
+                onChange={handleInputChange}
+                min="0"
+                step="500000"
+              />
+            </RangeInputGroup>
+          </RangeContainer>
+        </FilterGroup>
+        
+        <FilterGroup>
+          <FilterLabel>Diện tích (m²)</FilterLabel>
+          <RangeContainer>
+            <RangeInputGroup>
+              <RangeLabel>Từ</RangeLabel>
+              <FilterInput
+                type="number"
+                name="dien_tich_min"
+                placeholder="Tối thiểu"
+                value={tempFilter.dien_tich_min || ''}
+                onChange={handleInputChange}
+                min="0"
+                step="5"
+              />
+            </RangeInputGroup>
+            <RangeInputGroup>
+              <RangeLabel>Đến</RangeLabel>
+              <FilterInput
+                type="number"
+                name="dien_tich_max"
+                placeholder="Tối đa"
+                value={tempFilter.dien_tich_max || ''}
+                onChange={handleInputChange}
+                min="0"
+                step="5"
+              />
+            </RangeInputGroup>
+          </RangeContainer>
         </FilterGroup>
         
         <ButtonContainer>
