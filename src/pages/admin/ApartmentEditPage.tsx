@@ -368,7 +368,10 @@ const isInvalidOrMissingId = !isNewApartment && (!id || isNaN(Number(id)) || Num
           // Hiển thị ID dự kiến
           console.log(`ID dự kiến cho căn hộ mới: ${nextId}`);
           
-          const newApartment = await addApartment(apartmentToSave);
+          // Xóa id khỏi apartmentToSave để tránh xung đột với sequence của PostgreSQL
+          const { id: _, ...apartmentToCreate } = apartmentToSave;
+          
+          const newApartment = await addApartment(apartmentToCreate);
           console.log('Đã tạo căn hộ mới với ID:', newApartment.id);
           
           // Kiểm tra ID hợp lệ sau khi tạo
