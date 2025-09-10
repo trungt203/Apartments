@@ -335,15 +335,23 @@ const isInvalidOrMissingId = !isNewApartment && (!id || isNaN(Number(id)) || Num
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Kiểm tra dữ liệu
-    // if (!apartment.dia_chi || !apartment.gia_thue || !apartment.dien_tich) {
-    //   setError('Vui lòng điền đầy đủ thông tin bắt buộc');
-    //   return;
-    // }
+    // Ngăn không cho nhấn nút lưu nhiều lần
+    if (saving) {
+      return;
+    }
+    
+    // Kiểm tra dữ liệu cơ bản
+    if (!apartment.dia_chi) {
+      setError('Vui lòng nhập địa chỉ căn hộ');
+      return;
+    }
     
     try {
       setSaving(true);
       setError(null);
+      
+      // Hiển thị thông báo đang lưu
+      console.log('Đang lưu thông tin căn hộ...');
       
       // Chuẩn bị dữ liệu căn hộ, đảm bảo không có NaN
       const apartmentToSave = {
@@ -363,28 +371,22 @@ const isInvalidOrMissingId = !isNewApartment && (!id || isNaN(Number(id)) || Num
       console.log('Đang lưu thông tin căn hộ:', apartmentToSave);
       
       if (isNewApartment) {
-        // Tạo căn hộ mới
-        try {
-          // Hiển thị ID dự kiến
-          console.log(`ID dự kiến cho căn hộ mới: ${nextId}`);
-          
-          // Xóa id khỏi apartmentToSave để tránh xung đột với sequence của PostgreSQL
-          const { id: _, ...apartmentToCreate } = apartmentToSave;
-          
-          const newApartment = await addApartment(apartmentToCreate);
-          console.log('Đã tạo căn hộ mới với ID:', newApartment.id);
-          
-          // Kiểm tra ID hợp lệ sau khi tạo
-          if (!newApartment || !newApartment.id || Number(newApartment.id) <= 0) {
-            throw new Error('Không thể tạo căn hộ mới: ID không hợp lệ');
-          }
-          
-          // Chuyển hướng đến trang chi tiết căn hộ mới với ID hợp lệ
-          navigate(`/admin/apartments/${newApartment.id}`);
-        } catch (error: any) {
-          console.error('Lỗi khi thêm căn hộ mới:', error);
-          throw error; // Chuyển tiếp lỗi để xử lý trong khối catch ở ngoài
+        // Tạo căn hộ mới - không đặt try/catch lồng nhau để tránh xử lý lỗi lặp lại
+        console.log(`ID dự kiến cho căn hộ mới: ${nextId}`);
+        
+        // Xóa id khỏi apartmentToSave để tránh xung đột với sequence của PostgreSQL
+        const { id: _, ...apartmentToCreate } = apartmentToSave;
+        
+        const newApartment = await addApartment(apartmentToCreate);
+        console.log('Đã tạo căn hộ mới với ID:', newApartment.id);
+        
+        // Kiểm tra ID hợp lệ sau khi tạo
+        if (!newApartment || !newApartment.id || Number(newApartment.id) <= 0) {
+          throw new Error('Không thể tạo căn hộ mới: ID không hợp lệ');
         }
+        
+        // Chỉ chuyển hướng khi không có lỗi
+        navigate('/admin/apartments');
       } else if (id !== 'new' && isInvalidOrMissingId) {
         // Không cho phép lưu nếu ID không hợp lệ
         throw new Error('Không thể cập nhật căn hộ: ID không hợp lệ hoặc không tồn tại');
@@ -393,7 +395,9 @@ const isInvalidOrMissingId = !isNewApartment && (!id || isNaN(Number(id)) || Num
         const apartmentId = Number(id);
         await updateApartment(apartmentId, apartmentToSave);
         console.log('Đã cập nhật căn hộ có ID:', apartmentId);
-        navigate(`/admin/apartments`);
+        
+        // Chỉ chuyển hướng khi không có lỗi
+        navigate('/admin/apartments');
       }
     } catch (err: any) {
       console.error('Lỗi chi tiết:', err);
@@ -414,6 +418,11 @@ const isInvalidOrMissingId = !isNewApartment && (!id || isNaN(Number(id)) || Num
       }
       
       setError(errorMessage);
+      
+      // Hiển thị thông báo lỗi trên console để dễ debug
+      console.error('Lỗi khi lưu căn hộ:', errorMessage);
+      
+      // Ở lại trang hiện tại khi có lỗi xảy ra
     } finally {
       setSaving(false);
     }
